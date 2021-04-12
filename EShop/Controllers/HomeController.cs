@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EShop.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,11 @@ namespace EShop.Controllers
 {
     public class HomeController : Controller
     {
+        private EShopDbEntities db = new EShopDbEntities();
         public ActionResult Index()
         {
+            ViewBag.ListProduct = db.Product.OrderByDescending(p => p.Pro_Id).Take(6).ToList();
+                                  
             return View();
         }
 

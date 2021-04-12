@@ -1,31 +1,54 @@
-﻿@{
+﻿@using System.Globalization;
+@{
     ViewBag.Title = "Home Page";
+int count = 0;
+Random rand = new Random();
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div class="features_items">
+    <!--features_items-->
+    <h2 class="title text-center">Features Items</h2>
+    @foreach (var item in ViewBag.ListProduct)
+    {
+        string imagesurl = @item.Pro_Image;
+        imagesurl = imagesurl.Split('$').First();   
+        <div class="col-sm-4">
+            <div class="product-image-wrapper">
+                <div class="single-products">
+                    <div class="productinfo text-center">
+                        <img src="~/images/Products/@imagesurl" alt="" height="300" />
+                        <h2>@item.Pro_Price.ToString("C0", new CultureInfo("vi-VN"))</h2>
+                        <p>@item.Pro_Name</p>
+                        <a href="/Detail/Index/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                    </div>
+                    <div class="product-overlay">
+                        <div class="overlay-content">
+                            <h2>@item.Pro_Price.ToString("C0", new CultureInfo("vi-VN"))</h2>
+                            <p>@item.Pro_Name</p>
+                            <a href="/Detail/Index/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="choose">
+                    <ul class="nav nav-pills nav-justified">
+                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+<div class="category-tab">
+    <!--category-tab-->
+    <div class="col-sm-12">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#sport" data-toggle="tab">Sport</a></li>
+            <li><a href="#fashion" data-toggle="tab">Fashion</a></li>
+            <li><a href="#kid" data-toggle="tab">Kids</a></li>
+            <li><a href="#men" data-toggle="tab">Men</a></li>
+            <li><a href="#women" data-toggle="tab">Women</a></li>
+        </ul>
+    </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
 </div>

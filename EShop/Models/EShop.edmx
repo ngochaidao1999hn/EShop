@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EShopDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="Acc_Id" />
+          </Key>
+          <Property Name="Acc_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Acc_UserName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Acc_Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Acc_Customer" Type="int" />
+        </EntityType>
+        <EntityType Name="Brands">
+          <Key>
+            <PropertyRef Name="Brand_Id" />
+          </Key>
+          <Property Name="Brand_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Brand_Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Cate_Id" />
+          </Key>
+          <Property Name="Cate_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cate_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Cate_Image" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Cate_Description" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Cus_Id" />
+          </Key>
+          <Property Name="Cus_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cus_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Cus_Adress" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Cus_Dob" Type="nvarchar" MaxLength="100" />
+          <Property Name="Cus_PhoneNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Cus_Email" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJECTS\ESHOP\ESHOP\APP_DATA\ESHOPDB.MDF.dbo.OrderDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="Detail_PriceEach" />
+          </Key>
+          <Property Name="Detail_Product" Type="int" />
+          <Property Name="Detail_Quantity" Type="int" />
+          <Property Name="Detail_PriceEach" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Detail_OrderNumber" Type="int" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Ord_Id" />
+          </Key>
+          <Property Name="Ord_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ord_CreateDate" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Ord_ShippedDate" Type="nvarchar" MaxLength="100" />
+          <Property Name="Ord_Status" Type="int" Nullable="false" />
+          <Property Name="Ord_Customer" Type="int" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Pro_Id" />
+          </Key>
+          <Property Name="Pro_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Pro_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Pro_Price" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Pro_Image" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Pro_Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Pro_Category" Type="int" />
+          <Property Name="Pro_Brand" Type="int" />
+        </EntityType>
+        <Association Name="FK__Accounts__Acc_Cu__2D27B809">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cus_Id" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="Acc_Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Detai__31EC6D26">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Pro_Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="Detail_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Detai__32E0915F">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Ord_Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="Detail_OrderNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__Ord_Cust__300424B4">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cus_Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Ord_Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Pro_Bra__36B12243">
+          <End Role="Brands" Type="Self.Brands" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Brand_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Pro_Brand" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Pro_Cat__286302EC">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Cate_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Pro_Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EShopDbModelStoreContainer">
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OrderDetails].[Detail_Product] AS [Detail_Product], 
+    [OrderDetails].[Detail_Quantity] AS [Detail_Quantity], 
+    [OrderDetails].[Detail_PriceEach] AS [Detail_PriceEach], 
+    [OrderDetails].[Detail_OrderNumber] AS [Detail_OrderNumber]
+    FROM [dbo].[OrderDetails] AS [OrderDetails]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Accounts__Acc_Cu__2D27B809" Association="Self.FK__Accounts__Acc_Cu__2D27B809">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Detai__31EC6D26" Association="Self.FK__OrderDeta__Detai__31EC6D26">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Detai__32E0915F" Association="Self.FK__OrderDeta__Detai__32E0915F">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__Ord_Cust__300424B4" Association="Self.FK__Orders__Ord_Cust__300424B4">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Pro_Bra__36B12243" Association="Self.FK__Product__Pro_Bra__36B12243">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Pro_Cat__286302EC" Association="Self.FK__Product__Pro_Cat__286302EC">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EShopDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="Acc_Id" />
+          </Key>
+          <Property Name="Acc_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Acc_UserName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Acc_Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Acc_Customer" Type="Int32" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__Accounts__Acc_Cu__2D27B809" FromRole="Accounts" ToRole="Customers" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Cate_Id" />
+          </Key>
+          <Property Name="Cate_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cate_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cate_Image" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cate_Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Product__Pro_Cat__286302EC" FromRole="Categories" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="Cus_Id" />
+          </Key>
+          <Property Name="Cus_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cus_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cus_Adress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Cus_Dob" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Cus_PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Cus_Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK__Accounts__Acc_Cu__2D27B809" FromRole="Customers" ToRole="Accounts" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__Ord_Cust__300424B4" FromRole="Customers" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="Ord_Id" />
+          </Key>
+          <Property Name="Ord_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ord_CreateDate" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ord_ShippedDate" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Ord_Status" Type="Int32" Nullable="false" />
+          <Property Name="Ord_Customer" Type="Int32" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK__Orders__Ord_Cust__300424B4" FromRole="Orders" ToRole="Customers" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Detai__32E0915F" FromRole="Orders" ToRole="OrderDetails" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Pro_Id" />
+          </Key>
+          <Property Name="Pro_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Pro_Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pro_Price" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Pro_Image" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Pro_Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Pro_Category" Type="Int32" />
+          <NavigationProperty Name="Categories" Relationship="Self.FK__Product__Pro_Cat__286302EC" FromRole="Product" ToRole="Categories" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Detai__31EC6D26" FromRole="Product" ToRole="OrderDetails" />
+          <Property Name="Pro_Brand" Type="Int32" />
+          <NavigationProperty Name="Brands" Relationship="EShopDbModel.FK__Product__Pro_Bra__36B12243" FromRole="Product" ToRole="Brands" />
+        </EntityType>
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="Detail_PriceEach" />
+          </Key>
+          <Property Name="Detail_Product" Type="Int32" />
+          <Property Name="Detail_Quantity" Type="Int32" />
+          <Property Name="Detail_PriceEach" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="Detail_OrderNumber" Type="Int32" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__OrderDeta__Detai__32E0915F" FromRole="OrderDetails" ToRole="Orders" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__OrderDeta__Detai__31EC6D26" FromRole="OrderDetails" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK__Accounts__Acc_Cu__2D27B809">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cus_Id" />
+            </Principal>
+            <Dependent Role="Accounts">
+              <PropertyRef Name="Acc_Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Product__Pro_Cat__286302EC">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="Cate_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Pro_Category" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__Ord_Cust__300424B4">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cus_Id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="Ord_Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Detai__32E0915F">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="Ord_Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="Detail_OrderNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Detai__31EC6D26">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Pro_Id" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="Detail_Product" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EShopDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" />
+          <EntitySet Name="Categories" EntityType="Self.Categories" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" />
+          <EntitySet Name="Product" EntityType="Self.Product" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" />
+          <AssociationSet Name="FK__Accounts__Acc_Cu__2D27B809" Association="Self.FK__Accounts__Acc_Cu__2D27B809">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Accounts" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Product__Pro_Cat__286302EC" Association="Self.FK__Product__Pro_Cat__286302EC">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__Ord_Cust__300424B4" Association="Self.FK__Orders__Ord_Cust__300424B4">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Detai__32E0915F" Association="Self.FK__OrderDeta__Detai__32E0915F">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Detai__31EC6D26" Association="Self.FK__OrderDeta__Detai__31EC6D26">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <EntitySet Name="Brands" EntityType="EShopDbModel.Brands" />
+          <AssociationSet Name="FK__Product__Pro_Bra__36B12243" Association="EShopDbModel.FK__Product__Pro_Bra__36B12243">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Brands">
+          <Key>
+            <PropertyRef Name="Brand_Id" />
+          </Key>
+          <Property Name="Brand_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Brand_Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product" Relationship="EShopDbModel.FK__Product__Pro_Bra__36B12243" FromRole="Brands" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK__Product__Pro_Bra__36B12243">
+          <End Type="EShopDbModel.Brands" Role="Brands" Multiplicity="0..1" />
+          <End Type="EShopDbModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Brand_Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="Pro_Brand" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EShopDbModelStoreContainer" CdmEntityContainer="EShopDbEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="EShopDbModel.Accounts">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Acc_Id" ColumnName="Acc_Id" />
+                <ScalarProperty Name="Acc_UserName" ColumnName="Acc_UserName" />
+                <ScalarProperty Name="Acc_Password" ColumnName="Acc_Password" />
+                <ScalarProperty Name="Acc_Customer" ColumnName="Acc_Customer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="EShopDbModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Cate_Id" ColumnName="Cate_Id" />
+                <ScalarProperty Name="Cate_Name" ColumnName="Cate_Name" />
+                <ScalarProperty Name="Cate_Image" ColumnName="Cate_Image" />
+                <ScalarProperty Name="Cate_Description" ColumnName="Cate_Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="EShopDbModel.Customers">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="Cus_Id" ColumnName="Cus_Id" />
+                <ScalarProperty Name="Cus_Name" ColumnName="Cus_Name" />
+                <ScalarProperty Name="Cus_Adress" ColumnName="Cus_Adress" />
+                <ScalarProperty Name="Cus_Dob" ColumnName="Cus_Dob" />
+                <ScalarProperty Name="Cus_PhoneNumber" ColumnName="Cus_PhoneNumber" />
+                <ScalarProperty Name="Cus_Email" ColumnName="Cus_Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="EShopDbModel.Orders">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Ord_Id" ColumnName="Ord_Id" />
+                <ScalarProperty Name="Ord_CreateDate" ColumnName="Ord_CreateDate" />
+                <ScalarProperty Name="Ord_ShippedDate" ColumnName="Ord_ShippedDate" />
+                <ScalarProperty Name="Ord_Status" ColumnName="Ord_Status" />
+                <ScalarProperty Name="Ord_Customer" ColumnName="Ord_Customer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="EShopDbModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Pro_Brand" ColumnName="Pro_Brand" />
+                <ScalarProperty Name="Pro_Id" ColumnName="Pro_Id" />
+                <ScalarProperty Name="Pro_Name" ColumnName="Pro_Name" />
+                <ScalarProperty Name="Pro_Price" ColumnName="Pro_Price" />
+                <ScalarProperty Name="Pro_Image" ColumnName="Pro_Image" />
+                <ScalarProperty Name="Pro_Description" ColumnName="Pro_Description" />
+                <ScalarProperty Name="Pro_Category" ColumnName="Pro_Category" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="EShopDbModel.OrderDetails">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="Detail_Product" ColumnName="Detail_Product" />
+                <ScalarProperty Name="Detail_Quantity" ColumnName="Detail_Quantity" />
+                <ScalarProperty Name="Detail_PriceEach" ColumnName="Detail_PriceEach" />
+                <ScalarProperty Name="Detail_OrderNumber" ColumnName="Detail_OrderNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brands">
+            <EntityTypeMapping TypeName="EShopDbModel.Brands">
+              <MappingFragment StoreEntitySet="Brands">
+                <ScalarProperty Name="Brand_Name" ColumnName="Brand_Name" />
+                <ScalarProperty Name="Brand_Id" ColumnName="Brand_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<EShop.Models.Customers>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Cus_Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cus_Adress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cus_Dob)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cus_PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cus_Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cus_Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cus_Adress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cus_Dob)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cus_PhoneNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cus_Email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Cus_Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Cus_Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Cus_Id })
+        </td>
+    </tr>
+}
+
+</table>
