@@ -32,5 +32,6 @@ namespace EShop.Models
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<OrderDetails> OrderDetails { get; set; }
         public virtual DbSet<Brands> Brands { get; set; }
+        public virtual DbSet<Reviews> Reviews { get; set; }
     }
 }

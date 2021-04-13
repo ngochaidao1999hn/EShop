@@ -18,6 +18,7 @@ namespace EShop.Models
         public Product()
         {
             this.OrderDetails = new HashSet<OrderDetails>();
+            this.Reviews = new HashSet<Reviews>();
         }
     
         public int Pro_Id { get; set; }
@@ -32,5 +33,7 @@ namespace EShop.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
         public virtual Brands Brands { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reviews> Reviews { get; set; }
     }
 }

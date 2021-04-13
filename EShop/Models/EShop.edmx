@@ -61,6 +61,8 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <Property Name="Ord_ShippedDate" Type="nvarchar" MaxLength="100" />
           <Property Name="Ord_Status" Type="int" Nullable="false" />
           <Property Name="Ord_Customer" Type="int" />
+          <Property Name="Ord_ToAdress" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Ord_ToPhone" Type="varchar" MaxLength="15" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -73,6 +75,17 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <Property Name="Pro_Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="Pro_Category" Type="int" />
           <Property Name="Pro_Brand" Type="int" />
+        </EntityType>
+        <EntityType Name="Reviews">
+          <Key>
+            <PropertyRef Name="Review_Id" />
+          </Key>
+          <Property Name="Review_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Review_CustomerId" Type="int" Nullable="false" />
+          <Property Name="Review_ProductId" Type="int" Nullable="false" />
+          <Property Name="Review_DateTime" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Review_Content" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Review_Rate" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__Accounts__Acc_Cu__2D27B809">
           <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
@@ -146,6 +159,30 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Reviews__Review___49C3F6B7">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cus_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Review_CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reviews__Review___4AB81AF0">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Reviews" Type="Self.Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Pro_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Review_ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="EShopDbModelStoreContainer">
           <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
@@ -153,6 +190,7 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [OrderDetails].[Detail_Product] AS [Detail_Product], 
@@ -184,6 +222,14 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <AssociationSet Name="FK__Product__Pro_Cat__286302EC" Association="Self.FK__Product__Pro_Cat__286302EC">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reviews__Review___49C3F6B7" Association="Self.FK__Reviews__Review___49C3F6B7">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reviews__Review___4AB81AF0" Association="Self.FK__Reviews__Review___4AB81AF0">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -222,6 +268,7 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <Property Name="Cus_Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Accounts" Relationship="Self.FK__Accounts__Acc_Cu__2D27B809" FromRole="Customers" ToRole="Accounts" />
           <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__Ord_Cust__300424B4" FromRole="Customers" ToRole="Orders" />
+          <NavigationProperty Name="Reviews" Relationship="EShopDbModel.FK__Reviews__Review___49C3F6B7" FromRole="Customers" ToRole="Reviews" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -234,6 +281,8 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <Property Name="Ord_Customer" Type="Int32" />
           <NavigationProperty Name="Customers" Relationship="Self.FK__Orders__Ord_Cust__300424B4" FromRole="Orders" ToRole="Customers" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Detai__32E0915F" FromRole="Orders" ToRole="OrderDetails" />
+          <Property Name="Ord_ToAdress" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Ord_ToPhone" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -249,6 +298,7 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Detai__31EC6D26" FromRole="Product" ToRole="OrderDetails" />
           <Property Name="Pro_Brand" Type="Int32" />
           <NavigationProperty Name="Brands" Relationship="EShopDbModel.FK__Product__Pro_Bra__36B12243" FromRole="Product" ToRole="Brands" />
+          <NavigationProperty Name="Reviews" Relationship="EShopDbModel.FK__Reviews__Review___4AB81AF0" FromRole="Product" ToRole="Reviews" />
         </EntityType>
         <EntityType Name="OrderDetails">
           <Key>
@@ -353,6 +403,15 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
             <End Role="Brands" EntitySet="Brands" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
+          <EntitySet Name="Reviews" EntityType="EShopDbModel.Reviews" />
+          <AssociationSet Name="FK__Reviews__Review___49C3F6B7" Association="EShopDbModel.FK__Reviews__Review___49C3F6B7">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Reviews__Review___4AB81AF0" Association="EShopDbModel.FK__Reviews__Review___4AB81AF0">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Reviews" EntitySet="Reviews" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Brands">
           <Key>
@@ -371,6 +430,43 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="Pro_Brand" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Reviews">
+          <Key>
+            <PropertyRef Name="Review_Id" />
+          </Key>
+          <Property Name="Review_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Review_CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="Review_ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Review_DateTime" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Review_Content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Review_Rate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customers" Relationship="EShopDbModel.FK__Reviews__Review___49C3F6B7" FromRole="Reviews" ToRole="Customers" />
+          <NavigationProperty Name="Product" Relationship="EShopDbModel.FK__Reviews__Review___4AB81AF0" FromRole="Reviews" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK__Reviews__Review___49C3F6B7">
+          <End Type="EShopDbModel.Customers" Role="Customers" Multiplicity="1" />
+          <End Type="EShopDbModel.Reviews" Role="Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="Cus_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Review_CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Reviews__Review___4AB81AF0">
+          <End Type="EShopDbModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="EShopDbModel.Reviews" Role="Reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Pro_Id" />
+            </Principal>
+            <Dependent Role="Reviews">
+              <PropertyRef Name="Review_ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -415,6 +511,8 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="EShopDbModel.Orders">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Ord_ToPhone" ColumnName="Ord_ToPhone" />
+                <ScalarProperty Name="Ord_ToAdress" ColumnName="Ord_ToAdress" />
                 <ScalarProperty Name="Ord_Id" ColumnName="Ord_Id" />
                 <ScalarProperty Name="Ord_CreateDate" ColumnName="Ord_CreateDate" />
                 <ScalarProperty Name="Ord_ShippedDate" ColumnName="Ord_ShippedDate" />
@@ -451,6 +549,18 @@ warning 6002: The table/view 'C:\USERS\84932\DOCUMENTS\VISUAL STUDIO 2019\PROJEC
               <MappingFragment StoreEntitySet="Brands">
                 <ScalarProperty Name="Brand_Name" ColumnName="Brand_Name" />
                 <ScalarProperty Name="Brand_Id" ColumnName="Brand_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="EShopDbModel.Reviews">
+              <MappingFragment StoreEntitySet="Reviews">
+                <ScalarProperty Name="Review_Rate" ColumnName="Review_Rate" />
+                <ScalarProperty Name="Review_Content" ColumnName="Review_Content" />
+                <ScalarProperty Name="Review_DateTime" ColumnName="Review_DateTime" />
+                <ScalarProperty Name="Review_ProductId" ColumnName="Review_ProductId" />
+                <ScalarProperty Name="Review_CustomerId" ColumnName="Review_CustomerId" />
+                <ScalarProperty Name="Review_Id" ColumnName="Review_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

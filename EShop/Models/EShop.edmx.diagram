@@ -18,6 +18,9 @@
         <AssociationConnector Association="EShopDbModel.FK__OrderDeta__Detai__31EC6D26" ManuallyRouted="false" />
         <EntityTypeShape EntityType="EShopDbModel.Brands" Width="1.5" PointX="5.375" PointY="0.875" />
         <AssociationConnector Association="EShopDbModel.FK__Product__Pro_Bra__36B12243" />
+        <EntityTypeShape EntityType="EShopDbModel.Reviews" Width="1.5" PointX="5.25" PointY="7.375" />
+        <AssociationConnector Association="EShopDbModel.FK__Reviews__Review___49C3F6B7" />
+        <AssociationConnector Association="EShopDbModel.FK__Reviews__Review___4AB81AF0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

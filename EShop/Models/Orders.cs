@@ -25,6 +25,8 @@ namespace EShop.Models
         public string Ord_ShippedDate { get; set; }
         public int Ord_Status { get; set; }
         public Nullable<int> Ord_Customer { get; set; }
+        public string Ord_ToAdress { get; set; }
+        public string Ord_ToPhone { get; set; }
     
         public virtual Customers Customers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

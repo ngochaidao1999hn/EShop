@@ -19,6 +19,7 @@ namespace EShop.Models
         {
             this.Accounts = new HashSet<Accounts>();
             this.Orders = new HashSet<Orders>();
+            this.Reviews = new HashSet<Reviews>();
         }
     
         public int Cus_Id { get; set; }
@@ -32,5 +33,7 @@ namespace EShop.Models
         public virtual ICollection<Accounts> Accounts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Orders> Orders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reviews> Reviews { get; set; }
     }
 }

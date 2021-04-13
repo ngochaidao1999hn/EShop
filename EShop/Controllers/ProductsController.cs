@@ -30,9 +30,9 @@ namespace EShop.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Redirect("~/Home/Index");
             }
-            Product product = await db.Product.FindAsync(id);
+            Product product = await db.Product.Include(b=>b.Brands).Where(p=>p.Pro_Id==id).FirstOrDefaultAsync();
             if (product == null)
             {
                 return HttpNotFound();
@@ -43,7 +43,7 @@ namespace EShop.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            ViewBag.Pro_Brands = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
+            ViewBag.Pro_Brand = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
             ViewBag.Pro_Category = new SelectList(db.Categories, "Cate_Id", "Cate_Name");
             return View();
         }
@@ -74,7 +74,7 @@ namespace EShop.Controllers
                             {
                                 flag = 1;
                                 ViewBag.FileStatus = ex + " is not an image";
-                                ViewBag.Pro_Brands = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
+                                ViewBag.Pro_Brand = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
                                 ViewBag.Pro_Category = new SelectList(db.Categories, "Cate_Id", "Cate_Name");
                                 return View(product);
                             }
@@ -85,7 +85,7 @@ namespace EShop.Controllers
                         {
                             flag = 1;
                             ViewBag.FileStatus = " Must have image !!!!";
-                            ViewBag.Pro_Brands = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
+                            ViewBag.Pro_Brand = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
                             ViewBag.Pro_Category = new SelectList(db.Categories, "Cate_Id", "Cate_Name");
                             return View(product);
                         }
@@ -104,7 +104,7 @@ namespace EShop.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.Pro_Brands = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
+            ViewBag.Pro_Brand = new SelectList(db.Brands, "Brand_Id", "Brand_Name");
             ViewBag.Pro_Category = new SelectList(db.Categories, "Cate_Id", "Cate_Name", product.Pro_Category);
             return View(product);
         }
