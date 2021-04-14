@@ -108,7 +108,7 @@ namespace EShop.Controllers
             ViewBag.Pro_Category = new SelectList(db.Categories, "Cate_Id", "Cate_Name", product.Pro_Category);
             return View(product);
         }
-
+       
         // GET: Products/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {

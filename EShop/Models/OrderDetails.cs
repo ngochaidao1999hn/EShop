@@ -18,8 +18,9 @@ namespace EShop.Models
         public Nullable<int> Detail_Quantity { get; set; }
         public decimal Detail_PriceEach { get; set; }
         public Nullable<int> Detail_OrderNumber { get; set; }
+        public int Detail_Id { get; set; }
     
-        public virtual Orders Orders { get; set; }
         public virtual Product Product { get; set; }
+        public virtual Orders Orders { get; set; }
     }
 }

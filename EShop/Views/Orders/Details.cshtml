@@ -1,0 +1,51 @@
+﻿@model EShop.Models.Orders
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Orders</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ord_CreateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ord_CreateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ord_ShippedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ord_ShippedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ord_Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ord_Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Customers.Cus_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customers.Cus_Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Ord_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

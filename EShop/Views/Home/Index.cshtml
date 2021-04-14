@@ -68,50 +68,197 @@
         </div>
     </div>
 </section><!--/slider-->
-<div class="features_items">
-    <!--features_items-->
-    <h2 class="title text-center">Features Items</h2>
-    @foreach (var item in ViewBag.ListProduct)
-    {
-        string imagesurl = @item.Pro_Image;
-        imagesurl = imagesurl.Split('$').First();
-        <div class="col-sm-4">
-            <div class="product-image-wrapper">
-                <div class="single-products">
-                    <div class="productinfo text-center">
-                        <img src="~/images/Products/@imagesurl" alt="" height="300" />
-                        <h2>@item.Pro_Price.ToString("C0", new CultureInfo("vi-VN"))</h2>
-                        <p>@item.Pro_Name</p>
-                        <a href="/Products/Details/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                    </div>
-                    <div class="product-overlay">
-                        <div class="overlay-content">
-                            <h2>@item.Pro_Price.ToString("C0", new CultureInfo("vi-VN"))</h2>
-                            <p>@item.Pro_Name</p>
-                            <a href="/Products/Details/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="left-sidebar">
+                    <h2>Category</h2>
+                    <div class="panel-group category-products" id="accordian">
+                        <!--category-productsr-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
+                                        <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                                        Sportswear
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="sportswear" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul>
+                                        <li><a href="">Nike </a></li>
+                                        <li><a href="">Under Armour </a></li>
+                                        <li><a href="">Adidas </a></li>
+                                        <li><a href="">Puma</a></li>
+                                        <li><a href="">ASICS </a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="choose">
-                    <ul class="nav nav-pills nav-justified">
-                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-                    </ul>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordian" href="#mens">
+                                        <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                                        Mens
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="mens" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul>
+                                        <li><a href="">Fendi</a></li>
+                                        <li><a href="">Guess</a></li>
+                                        <li><a href="">Valentino</a></li>
+                                        <li><a href="">Dior</a></li>
+                                        <li><a href="">Versace</a></li>
+                                        <li><a href="">Armani</a></li>
+                                        <li><a href="">Prada</a></li>
+                                        <li><a href="">Dolce and Gabbana</a></li>
+                                        <li><a href="">Chanel</a></li>
+                                        <li><a href="">Gucci</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordian" href="#womens">
+                                        <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                                        Womens
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="womens" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <ul>
+                                        <li><a href="">Fendi</a></li>
+                                        <li><a href="">Guess</a></li>
+                                        <li><a href="">Valentino</a></li>
+                                        <li><a href="">Dior</a></li>
+                                        <li><a href="">Versace</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">Kids</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">Fashion</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">Households</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">Interiors</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">Clothing</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">Bags</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="#">Shoes</a></h4>
+                            </div>
+                        </div>
+                    </div><!--/category-products-->
+
+                    <div class="brands_products">
+                        <!--brands_products-->
+                        <h2>Brands</h2>
+                        <div class="brands-name">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href=""> <span class="pull-right">(50)</span>Acne</a></li>
+                                <li><a href=""> <span class="pull-right">(56)</span>Grüne Erde</a></li>
+                                <li><a href=""> <span class="pull-right">(27)</span>Albiro</a></li>
+                                <li><a href=""> <span class="pull-right">(32)</span>Ronhill</a></li>
+                                <li><a href=""> <span class="pull-right">(5)</span>Oddmolly</a></li>
+                                <li><a href=""> <span class="pull-right">(9)</span>Boudestijn</a></li>
+                                <li><a href=""> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
+                            </ul>
+                        </div>
+                    </div><!--/brands_products-->
+
+
+
+                    <div class="shipping text-center">
+                        <!--shipping-->
+                        <img src="~/images/home/shipping.jpg" alt="" />
+                    </div><!--/shipping-->
+
                 </div>
             </div>
-        </div>
-    }
-</div>
-<div class="category-tab">
-    <!--category-tab-->
-    <div class="col-sm-12">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#sport" data-toggle="tab">Sport</a></li>
-            <li><a href="#fashion" data-toggle="tab">Fashion</a></li>
-            <li><a href="#kid" data-toggle="tab">Kids</a></li>
-            <li><a href="#men" data-toggle="tab">Men</a></li>
-            <li><a href="#women" data-toggle="tab">Women</a></li>
-        </ul>
-    </div>
 
-</div>
+            <div class="col-sm-9 padding-right">
+                <div class="features_items">
+                    <!--features_items-->
+                    <h2 class="title text-center">Features Items</h2>
+                    @foreach (var item in ViewBag.ListProduct)
+                    {
+                        string imagesurl = @item.Pro_Image;
+                        imagesurl = imagesurl.Split('$').First();
+                        <div class="col-sm-4">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <img src="~/images/Products/@imagesurl" alt="" height="300" />
+                                        <h2>@item.Pro_Price.ToString("C0", new CultureInfo("vi-VN"))</h2>
+                                        <p>@item.Pro_Name</p>
+                                        <a href="/Products/Details/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                    </div>
+                                    <div class="product-overlay">
+                                        <div class="overlay-content">
+                                            <h2>@item.Pro_Price.ToString("C0", new CultureInfo("vi-VN"))</h2>
+                                            <p>@item.Pro_Name</p>
+                                            <a href="/Products/Details/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="choose">
+                                    <ul class="nav nav-pills nav-justified">
+                                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="category-tab">
+                    <!--category-tab-->
+                    <div class="col-sm-12">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#sport" data-toggle="tab">Sport</a></li>
+                            <li><a href="#fashion" data-toggle="tab">Fashion</a></li>
+                            <li><a href="#kid" data-toggle="tab">Kids</a></li>
+                            <li><a href="#men" data-toggle="tab">Men</a></li>
+                            <li><a href="#women" data-toggle="tab">Women</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+

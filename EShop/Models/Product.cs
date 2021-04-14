@@ -28,11 +28,13 @@ namespace EShop.Models
         public string Pro_Description { get; set; }
         public Nullable<int> Pro_Category { get; set; }
         public Nullable<int> Pro_Brand { get; set; }
+        public Nullable<int> Pro_Status { get; set; }
+        public Nullable<int> Pro_QuantityOnStock { get; set; }
     
+        public virtual Brands Brands { get; set; }
         public virtual Categories Categories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
-        public virtual Brands Brands { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reviews> Reviews { get; set; }
     }
