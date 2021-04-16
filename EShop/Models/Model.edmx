@@ -62,6 +62,7 @@
           <Property Name="Ord_Customer" Type="int" />
           <Property Name="Ord_ToAdress" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Ord_ToPhone" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Ord_ToName" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -297,6 +298,7 @@
           <Property Name="Ord_ToPhone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Customers" Relationship="Self.FK__Orders__Ord_Cust__300424B4" FromRole="Orders" ToRole="Customers" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Detai__32E0915F" FromRole="Orders" ToRole="OrderDetails" />
+          <Property Name="Ord_ToName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -527,6 +529,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="EShopDbModel.Orders">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Ord_ToName" ColumnName="Ord_ToName" />
                 <ScalarProperty Name="Ord_Id" ColumnName="Ord_Id" />
                 <ScalarProperty Name="Ord_CreateDate" ColumnName="Ord_CreateDate" />
                 <ScalarProperty Name="Ord_ShippedDate" ColumnName="Ord_ShippedDate" />
