@@ -1,0 +1,55 @@
+﻿@using EShop.Models;
+@model EShop.Models.Accounts
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string date = DateTime.Now.ToString("yyyy-MM-dd");
+
+}
+<section id="form">
+    <!--form-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <div class="login-form">
+                    <!--login form-->
+                    <h2>Login to your account</h2>
+                    @using (Html.BeginForm("Login", "Accounts", FormMethod.Post))
+                    {
+                        <input type="text" name="UserName" placeholder="UserName" />
+                        <input type="password" name="Password" placeholder="Password" />
+                        <span style="color:red;">@ViewBag.Error</span>
+                        @*<span>
+                <input type="checkbox" class="checkbox">
+                Keep me signed in
+            </span>*@
+                        <button type="submit" class="btn btn-default">Login</button>
+                    }
+                </div><!--/login form-->
+            </div>
+            <div class="col-sm-1">
+                <h2 class="or">OR</h2>
+            </div>
+            <div class="col-sm-4">
+                <div class="signup-form">
+                    <!--sign up form-->
+                    <h2>New User Signup!</h2>
+                    @using (Html.BeginForm("Create", "Accounts", FormMethod.Post))
+                    {
+                        <input type="text" name="Cus_Name" placeholder="Your Name" value="@ViewBag.Cus_Name" autocomplete="off"/>
+                        <input type="text" name="Cus_Adress" placeholder="Your Address" value="@ViewBag.Cus_Adress"autocomplete="off" />
+                        <input type="text" name="Cus_Phone" placeholder="Your Phone Number" value="@ViewBag.Cus_PhoneNumber" autocomplete="off"/>
+                        <input type="email" name="Cus_Email" placeholder="Your Email" value="@ViewBag.Cus_Email" autocomplete="off"/>
+                        <input type="date" name="Cus_DOB" placeholder="Your date of birth" value="@ViewBag.Cus_Dob" autocomplete="off" max="@date"/>
+                        <input type="text" name="Acc_UserName" placeholder="Your UserName" value="@ViewBag.UserName"autocomplete="off" />
+                        <input type="password" name="Acc_Pass" placeholder="Password" value="@ViewBag.Pass"autocomplete="false" />
+                        <input type="password" name="Acc_RePass" placeholder="Re enter your Password" autocomplete="off"/>
+                        <button type="submit" class="btn btn-default">Signup</button>
+                        <span style="color:red;">@ViewBag.ErrorRegister</span>
+                    }
+                </div><!--/sign up form-->
+            </div>
+        </div>
+    </div>
+</section><!--/form-->

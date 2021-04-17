@@ -1,6 +1,8 @@
 ﻿@using EShop.Data;
+@using EShop.Models
 @{
     List<Cart> exiting = Session["ListCart"] as List<Cart>;
+    Customers c = Session["Customer"] as Customers;
     var count = 0;
     if (exiting != null)
     {
@@ -97,14 +99,21 @@
                     <div class="col-md-8 clearfix">
                         <div class="shop-menu clearfix pull-right">
                             <ul class="nav navbar-nav">
-                                <li><a href=""><i class="fa fa-user"></i> Account</a></li>
-                                <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>                              
+                                @if (c == null)
+                                {
+                                    <li><a href="~/Accounts/Login"><i class="fa fa-user"></i> Account</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href=""><i class="fa fa-user"></i>@c.Cus_Name </a></li>
+                                    <li><a href="~/Accounts/Logout"> Logout</a></li>
+                                }
                                 <li>
                                     <a href="/OrderDetails/Create" id="CountCart">
                                         <i class="fa fa-shopping-cart"></i>
                                         @if (count > 0)
                                         {<span class='badge badge-warning' id='lblCartCount' disabled="true"> @count </span>}
-                                        Checkout
+                                        
                                     </a>
                                 </li>
                             </ul>

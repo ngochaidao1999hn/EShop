@@ -41,7 +41,7 @@ namespace EShop.Controllers
             bool flag = false;
             var List = new List<Cart>();
             Cart c = new Cart(id,quantity,Price,db.Product.Find(id).Pro_Image.Split('$').First(),db.Product.Find(id).Pro_Name);
-            //List.Add(c);
+            List.Add(c);
             if (Session["ListCart"] != null)
             {
                 var exiting = Session["ListCart"] as List<Cart>;
@@ -63,12 +63,35 @@ namespace EShop.Controllers
            
             return Redirect("~/Products/Details/"+id);
         }
+        public ActionResult AddQuantity(int id) {
+            var list = Session["ListCart"] as List<Cart>;
+            list.Where(ex => ex.Pro_id == id).ToList().ForEach(i => i.Quantity += 1);
+            Session["ListCart"] = list;
+            return RedirectToAction("Create");
+        }
+        public ActionResult MinusQuantity(int id)
+        {
+            var list = Session["ListCart"] as List<Cart>;
+            list.Where(ex => ex.Pro_id == id).ToList().ForEach(i => i.Quantity -= 1);
+            if (list.Where(ex => ex.Pro_id == id).FirstOrDefault().Quantity <= 0) {
+                list.RemoveAll(l => l.Pro_id == id);
+            }
+            Session["ListCart"] = list;
+            return RedirectToAction("Create");
+        }
         public ActionResult Create() {
+            Customers c = Session["Customer"] as Customers;
+            if (c != null) {
+                ViewBag.Name = c.Cus_Name;
+                ViewBag.Adress = c.Cus_Adress;
+                ViewBag.Phone = c.Cus_PhoneNumber;
+                return View();
+            }
             return View();
         }
         [HttpPost]    
         public ActionResult Create(string phone,string adress,string name)
-        {
+        {           
             Customers c = Session["Customer"] as Customers;
             var list=Session["ListCart"] as List<Cart>;
             if (list != null) {

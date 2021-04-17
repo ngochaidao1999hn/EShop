@@ -6,131 +6,131 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Cart> l = Session["ListCart"] as List<Cart>;
-    decimal total = 0;
+    decimal total = 0;  
 }
 @using (Html.BeginForm())
 {
-if (l.Count() != 0)
-{
-<section id="cart_items">
-    <div class="container">
-        <div class="breadcrumbs">
-            <ol class="breadcrumb">
-                <li><a href="~/Home/Index">Home</a></li>
-                <li class="active">Checkout</li>
-            </ol>
-        </div><!--/breadcrums-->
-        <div class="review-payment">
-            <h2>Review & Payment</h2>
-        </div>
+    if (l.Count() != 0)
+    {
+        <section id="cart_items">
+            <div class="container">
+                <div class="breadcrumbs">
+                    <ol class="breadcrumb">
+                        <li><a href="~/Home/Index">Home</a></li>
+                        <li class="active">Checkout</li>
+                    </ol>
+                </div><!--/breadcrums-->
+                <div class="review-payment">
+                    <h2>Review & Payment</h2>
+                </div>
 
-        <div class="table-responsive cart_info">
-            <table class="table table-condensed">
-                <thead>
-                    <tr class="cart_menu">
-                        <td class="image">Item</td>
-                        <td class="description"></td>
-                        <td class="price">Price</td>
-                        <td class="quantity">Quantity</td>
-                        <td class="total">Total</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in l)
-                    {
+                <div class="table-responsive cart_info">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr class="cart_menu">
+                                <td class="image">Item</td>
+                                <td class="description"></td>
+                                <td class="price">Price</td>
+                                <td class="quantity">Quantity</td>
+                                <td class="total">Total</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in l)
+                            {
 
-                        string price = (item.Price * item.Quantity).ToString("C0", new CultureInfo("vi-VN"));
-                        total += (item.Price * item.Quantity);
-                        <tr>
-                            <td class="cart_product">
-                                <a href=""><img src="~/images/Products/@item.Image" alt=""height="200px" width="200px"></a>
-                            </td>
-                            <td class="cart_description">
-                                <h4><a href="">@item.Name</a></h4>
-                                <p>Web ID: @item.Pro_id</p>
-                            </td>
-                            <td class="cart_price">
-                                <p>@item.Price.ToString("C0", new CultureInfo("vi-VN"))</p>
-                            </td>
-                            <td class="cart_quantity">
-                                <div class="cart_quantity_button">
-                                    <a class="cart_quantity_up" href=""> + </a>
-                                    <input class="cart_quantity_input" type="text" name="quantity"readonly value="@item.Quantity" autocomplete="off" size="2">
-                                    <a class="cart_quantity_down" href=""> - </a>
+                                string price = (item.Price * item.Quantity).ToString("C0", new CultureInfo("vi-VN"));
+                                total += (item.Price * item.Quantity);
+                                <tr>
+                                    <td class="cart_product">
+                                        <a href=""><img src="~/images/Products/@item.Image" alt="" height="200px" width="200px"></a>
+                                    </td>
+                                    <td class="cart_description">
+                                        <h4><a href="">@item.Name</a></h4>
+                                        <p>Web ID: @item.Pro_id</p>
+                                    </td>
+                                    <td class="cart_price">
+                                        <p>@item.Price.ToString("C0", new CultureInfo("vi-VN"))</p>
+                                    </td>
+                                    <td class="cart_quantity">
+                                        <div class="cart_quantity_button">
+                                            <a class="cart_quantity_up" href="~/OrderDetails/AddQuantity/@item.Pro_id"> + </a>
+                                            <input class="cart_quantity_input" type="text" name="quantity" readonly value="@item.Quantity" autocomplete="off" size="2">
+                                            <a class="cart_quantity_down" href="~/OrderDetails/MinusQuantity/@item.Pro_id"> - </a>
+                                        </div>
+                                    </td>
+                                    <td class="cart_total">
+                                        <p class="cart_total_price">@price</p>
+
+                                    </td>
+
+                                    <td class="cart_delete">
+                                        <a class="cart_quantity_delete" href="~/OrderDetails/RemoveItem/@item.Pro_id"><i class="fa fa-times"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="4">&nbsp;</td>
+                                <td colspan="2">
+                                    <table class="table table-condensed total-result">
+                                        <tr>
+                                            <td>Cart Sub Total</td>
+                                            <td>@total.ToString("C0", new CultureInfo("vi-VN"))</td>
+                                        </tr>
+
+                                        <tr class="shipping-cost">
+                                            <td>Shipping Cost</td>
+                                            <td>Free</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total</td>
+                                            <td><span>@total.ToString("C0", new CultureInfo("vi-VN"))</span></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="shopper-informations">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="shopper-info form-group">
+                                <p>Shopper Information</p>                                   
+                                    <input type="text" name="name" placeholder="Name" class="form-control" required value="@ViewBag.Name" autocomplete="off" />
+                                    <input type="text" name="adress" placeholder="Adress" class="form-control" required value="@ViewBag.Adress"autocomplete="off" />
+                                    <input type="text" name="phone" placeholder="Phone number" class="form-control" required value="@ViewBag.Phone" autocomplete="off"/>                               
+                                <input type="submit" class="btn btn-primary" value="Checkout" />
+                            </div>
+                        </div>
+                        @*<div class="col-sm-4">
+                                <div class="order-message">
+                                    <p>Shipping Order</p>
+                                    <textarea name="message" placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
+                                    <label><input type="checkbox"> Shipping to bill address</label>
                                 </div>
-                            </td>
-                            <td class="cart_total">
-                                <p class="cart_total_price">@price</p>
-
-      </td>
-
-      <td class="cart_delete">
-                                <a class="cart_quantity_delete" href="~/OrderDetails/RemoveItem/@item.Pro_id"><i class="fa fa-times"></i></a>
-                            </td>
-                        </tr>
-                    }
-                    <tr>
-                        <td colspan="4">&nbsp;</td>
-                        <td colspan="2">
-                            <table class="table table-condensed total-result">
-                                <tr>
-                                    <td>Cart Sub Total</td>
-                                    <td>@total.ToString("C0",new CultureInfo("vi-VN"))</td>
-                                </tr>
-
-                                <tr class="shipping-cost">
-                                    <td>Shipping Cost</td>
-                                    <td>Free</td>
-                                </tr>
-                                <tr>
-                                    <td>Total</td>
-                                    <td><span>@total.ToString("C0", new CultureInfo("vi-VN"))</span></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="shopper-informations">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="shopper-info form-group">
-                        <p>Shopper Information</p>                   
-                            <input type="text" name="name" placeholder="Name" class="form-control"required/>
-                            <input type="text" name="adress" placeholder="Adress"class="form-control"required/>
-                            <input type="text" name="phone" placeholder="Phone number"class="form-control"required/>                  
-                        <input type="submit" class="btn btn-primary" value="Checkout" />
+                            </div>*@
                     </div>
                 </div>
-                @*<div class="col-sm-4">
-                    <div class="order-message">
-                        <p>Shipping Order</p>
-                        <textarea name="message" placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
-                        <label><input type="checkbox"> Shipping to bill address</label>
-                    </div>
-                </div>*@
-            </div>
-        </div>
 
-        @*<div class="payment-options">
-            <span>
-                <label><input type="checkbox"> Direct Bank Transfer</label>
-            </span>
-            <span>
-                <label><input type="checkbox"> Check Payment</label>
-            </span>
-            <span>
-                <label><input type="checkbox"> Paypal</label>
-            </span>
-        </div>*@
-    </div>
-</section> <!--/#cart_items-->
-}
-else
-{
-    <h1>Nothing in your cart</h1>
-    <p><a href="~/Home/Index">Shopping Now</a></p>
-}
+                @*<div class="payment-options">
+                        <span>
+                            <label><input type="checkbox"> Direct Bank Transfer</label>
+                        </span>
+                        <span>
+                            <label><input type="checkbox"> Check Payment</label>
+                        </span>
+                        <span>
+                            <label><input type="checkbox"> Paypal</label>
+                        </span>
+                    </div>*@
+            </div>
+        </section> <!--/#cart_items-->
+    }
+    else
+    {
+        <h1>Nothing in your cart</h1>
+        <p><a href="~/Home/Index">Shopping Now</a></p>
+    }
 }
