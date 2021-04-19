@@ -26,17 +26,20 @@ namespace EShop.Controllers
         }
 
         // GET: Products/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return Redirect("~/Home/Index");
             }
-            Product product = await db.Product.Include(b=>b.Brands).Where(p=>p.Pro_Id==id).FirstOrDefaultAsync();
+            Product product =  db.Product.Include(b=>b.Brands).Where(p=>p.Pro_Id==id).FirstOrDefault();
             if (product == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.ListReview = db.Reviews.Where(r => r.Review_ProductId == product.Pro_Id).ToList();
+            ViewBag.SameCategory = db.Product.Where(sc => sc.Pro_Category == product.Pro_Category&& sc.Pro_Id!=product.Pro_Id).Take(3).ToList();
+            ViewBag.SameBrand = db.Product.Where(sc => sc.Pro_Brand == product.Pro_Brand && sc.Pro_Id != product.Pro_Id).Take(3).ToList();
             return View(product);
         }
 

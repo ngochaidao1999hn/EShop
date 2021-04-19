@@ -1,9 +1,15 @@
 ﻿@using System.Globalization;
+@using EShop.Models;
 @model EShop.Models.Product
-
 @{
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    Customers cus = Session["Customer"] as Customers;
+    int count = 0;
+    if (ViewBag.ListReview != null){
+        var listreview = ViewBag.ListReview as List<Reviews>;
+        count += listreview.Count();
+    }
 }
 
 <section>
@@ -151,37 +157,21 @@
                     <!--product-details-->
                     <div class="col-sm-5">
                         <div class="view-product">
-                            <img src="~/images/Products/@Model.Pro_Image.Split('$').First()" alt="" />
+                            <img src="~/images/Products/@Model.Pro_Image.Split('$').First()" alt="" id="Pro_Detail_Main_Image"/>
                         </div>
                         <div id="similar-product" class="carousel slide" data-ride="carousel">
 
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-                                </div>
-                                <div class="item">
-                                    <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-                                </div>
-                                <div class="item">
-                                    <a href=""><img src="images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="images/product-details/similar3.jpg" alt=""></a>
-                                </div>
+                                    @foreach (var i in Model.Pro_Image.Split('$'))
+                                    {                                      
+                                    <img src="~/images/Products/@i" alt="" height="70px" width="60px" class="Pro_Detail_Image"/>
 
-                            </div>
 
-                            <!-- Controls -->
-                            <a class="left item-control" href="#similar-product" data-slide="prev">
-                                <i class="fa fa-angle-left"></i>
-                            </a>
-                            <a class="right item-control" href="#similar-product" data-slide="next">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
+                                    }
+                                </div>
+                            </div>                         
                         </div>
 
                     </div>
@@ -213,7 +203,7 @@
                     <div class="col-sm-12">
                         <ul class="nav nav-tabs">
                             <li><a href="#details" data-toggle="tab">Details</a></li>
-                            <li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+                            <li class="active"><a href="#reviews" data-toggle="tab">Reviews (@count)</a></li>
                         </ul>
                     </div>
                     <div class="tab-content">
@@ -221,36 +211,62 @@
                             @Model.Pro_Description
                         </div>
                         <div class="tab-pane fade active in" id="reviews">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12" id="LisReview">
                                 @if (ViewBag.ListReview != null)
                                 {
-                                    <ul>
-                                        <li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-                                        <li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-                                        <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-                                    </ul>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                                    <p><b>Write Your Review</b></p>
+                                    foreach (var i in ViewBag.ListReview)
+                                    {
+                                        DateTime datetime =DateTime.ParseExact(i.Review_DateTime,"MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                                        string time = datetime.ToString("hh:mm tt");
+                                        string date = datetime.ToString("dd MMMM yyyy", new CultureInfo("vi-VN"));
+
+                                        <ul>
+                                            <li><a href=""><i class="fa fa-user"></i>@i.Customers.Cus_Name</a></li>
+                                            <li><a href=""><i class="fa fa-clock-o"></i>@time</a></li>
+                                            <li><a href=""><i class="fa fa-calendar-o"></i>@date</a></li>
+                                        </ul>
+                                        <p>@i.Review_Content</p>
+
+                                    }
                                 }
                                 else
                                 {
                                     <p>No review yet</p>
                                 }
-                                <form action="#">
-                                    @if (Session["Customer"] != null)
-                                    {
-                                        <span>
-                                            <input type="text" placeholder="Your Name" />
-                                            <input type="email" placeholder="Email Address" />
-                                        </span>
-                                    }
 
-                                    <textarea name=""></textarea>
-                                    <b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-                                    <button type="button" class="btn btn-default pull-right">
-                                        Submit
-                                    </button>
-                                </form>
+                                @if (cus == null)
+                                {
+                                    <a href="~/Accounts/Login">
+                                        <h2>Login to post comment</h2>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <p><b>Write Your Review</b></p>
+                                    <form action="/Reviews/Create" method="post">
+                                        <input type="hidden" value="@cus.Cus_Id" name="Cus_id" />
+                                        <input type="hidden" value="@Model.Pro_Id" name="Pro_id" />
+                                        <textarea  id="Review_Content" name="Content" required></textarea>
+                                        <input type="submit" class="btn btn-default pull-right" value="submit" style="color:white;background-color:#FE980F;"/>
+                                     
+                                    
+
+                                        <div id="ratelabel"><b i>Rating: </b></div>
+                                        <div id="star">
+                                            <input class="star star-5" id="star-5" type="radio" name="star" value="5" required/>
+                                            <label class="star star-5" for="star-5"></label>
+                                            <input class="star star-4" id="star-4" type="radio" name="star" value="4"required />
+                                            <label class="star star-4" for="star-4"></label>
+                                            <input class="star star-3" id="star-3" type="radio" name="star" value="3"required />
+                                            <label class="star star-3" for="star-3"></label>
+                                            <input class="star star-2" id="star-2" type="radio" name="star" value="2"required />
+                                            <label class="star star-2" for="star-2"></label>
+                                            <input class="star star-1" id="star-1" type="radio" name="star" value="1" required/>
+                                            <label class="star star-1" for="star-1"></label>
+                                        </div>
+                                    </form>
+                                }
+
                             </div>
                         </div>
 
@@ -264,81 +280,46 @@
                     <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             <div class="item active">
+                                @foreach (var item in ViewBag.SameCategory)
+                                {
+                                    string imageurl = item.Pro_Image;
+                                    decimal recommendprice = item.Pro_Price;
+                                 
                                 <div class="col-sm-4">
                                     <div class="product-image-wrapper">
                                         <div class="single-products">
                                             <div class="productinfo text-center">
-                                                <img src="images/home/recommend1.jpg" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                <img src="~/images/Products/@imageurl.Split('$').First()" alt=""  height="300"/>
+                                                <h2>@recommendprice.ToString("C0", new CultureInfo("vi-VN"))</h2>
+                                                <p>@item.Pro_Name</p>
+                                                <a href="/Products/Details/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <img src="images/home/recommend2.jpg" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <img src="images/home/recommend3.jpg" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                }
+
                             </div>
                             <div class="item">
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <img src="images/home/recommend1.jpg" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                @foreach (var item in ViewBag.SameBrand)
+                                {
+                                     string SameBrandImg = item.Pro_Image;
+                                    decimal SameBrandPrice = item.Pro_Price;
+                                    <div class="col-sm-4">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <img src="~/images/Products/@SameBrandImg.Split('$').First()" alt="" height="300" />
+                                                    <h2>@SameBrandPrice.ToString("C0", new CultureInfo("vi-VN"))</h2>
+                                                    <p>Easy Polo Black Edition</p>
+                                                    <a href="/Products/Details/@item.Pro_Id" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                }
                                 </div>
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <img src="images/home/recommend2.jpg" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="product-image-wrapper">
-                                        <div class="single-products">
-                                            <div class="productinfo text-center">
-                                                <img src="images/home/recommend3.jpg" alt="" />
-                                                <h2>$56</h2>
-                                                <p>Easy Polo Black Edition</p>
-                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
@@ -351,21 +332,28 @@
                 </div>
                 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
                 <script>
+                    $(document).ready(function () {
 
-        $("#btn_AddToCart").on('click', function (e) {
-            var Pro_price = '';
-            var Pro_id = $(this).data("id");
-            Pro_price += @Model.Pro_Price.ToString();
-            var quantity = $("#quantity").val();
-            $.get('/OrderDetails/AddToCart?id=' + Pro_id + '&quantity=' + quantity + '&Price= ' + Pro_price, function (data) {
-                 if ($("#lblCartCount").val()!= null) {
-                $("#lblCartCount").text(parseInt($("#lblCartCount").text()) + parseInt(quantity));
+                        $("#btn_AddToCart").on('click', function (e) {
+                            var Pro_price = '';
+                            var Pro_id = $(this).data("id");
+                            Pro_price += @Model.Pro_Price.ToString();
+                            var quantity = $("#quantity").val();
+                            $.get('/OrderDetails/AddToCart?id=' + Pro_id + '&quantity=' + quantity + '&Price= ' + Pro_price, function (data) {
+                                if ($("#lblCartCount").val() != null) {
+                                    $("#lblCartCount").text(parseInt($("#lblCartCount").text()) + parseInt(quantity));
 
-            } else {
-                $("#CountCart").append('<span class=\'badge badge-warning\' id=\'lblCartCount\' disabled=\"true\">' + parseInt(quantity) + ' <\/span >');
-            }
-            });
-           
-        });
+                                } else {
+                                    $("#CountCart").append('<span class=\'badge badge-warning\' id=\'lblCartCount\' disabled=\"true\">' + parseInt(quantity) + ' <\/span >');
+                                }
+                            });
 
+                        });
+                        $(".Pro_Detail_Image").on('click', function (e) {
+                            var url = '';
+                            url += $(this).attr('src');
+                            console.log(url);
+                            $("#Pro_Detail_Main_Image").attr('src', url);
+                        });
+                    });                                  
                 </script>

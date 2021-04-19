@@ -72,6 +72,53 @@ a#scrollUp i {
     vertical-align: top;
     margin-left: -10px;
 }
+#ratelabel {
+    display: inline-block;
+    float: left;
+    height: 50px;
+    line-height: 50px;
+}
+input.star {
+    display: none;
+   
+}
+#star {
+    display: inline-block;
+    float: left;
+    margin-left: 10px;
+    height:50px;
+    line-height:30px;
+}
+label.star {
+    float: right;
+    padding: 10px;
+    font-size: 16px;
+    color: #444;
+    transition: all .2s;
+}
+#star-5 {
+    margin-right:500px;
+}
+input.star:checked ~ label.star:before {
+    content: '\f005';
+    color: #FE980F;
+    transition: all .25s;
+}
+
+input.star-5:checked ~ label.star:before {
+    color: #FE980F;
+}
+
+input.star-1:checked ~ label.star:before {
+    color: #FE980F;
+}
+
+
+
+label.star:before {
+    content: '\f006';
+    font-family: FontAwesome;
+}
 /*************************
 *******Header CSS******
 **************************/
