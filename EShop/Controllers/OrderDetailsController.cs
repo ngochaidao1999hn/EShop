@@ -12,6 +12,7 @@ using EShop.Data;
 
 namespace EShop.Controllers
 {
+    [HandleError]
     public class OrderDetailsController : Controller
     {
         private EShopDbEntities db = new EShopDbEntities();

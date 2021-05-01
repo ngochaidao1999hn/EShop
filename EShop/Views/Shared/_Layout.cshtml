@@ -27,12 +27,7 @@
     <!--[if lt IE 9]>
     <script src="~/Scripts/html5shiv.js"></script>
     <script src="~/Scripts/respond.min.js"></script>
-    <![endif]-->
-    <link rel="shortcut icon" href="~/images/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/images/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/images/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/images/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="~/images/ico/apple-touch-icon-57-precomposed.png">
+    <![endif]-->  
 </head><!--/head-->
 <body>
     <header id="header">
@@ -90,7 +85,9 @@
                                     <a href="/OrderDetails/Create" id="CountCart">
                                         <i class="fa fa-shopping-cart"></i>
                                         @if (count > 0)
-                                        {<span class='badge badge-warning' id='lblCartCount' disabled="true"> @count </span>}
+                                        {
+                                         <span class='badge badge-warning' id='lblCartCount' disabled="true"> @count </span>
+                                        }
                                         
                                     </a>
                                 </li>
@@ -302,8 +299,8 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="row">
-                <p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-                <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+                <p class="pull-left">Copyright © 2021 Dao Ngoc Hai </p>
+                <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Ngoc Hai</a></span></p>
             </div>
         </div>
     </div>

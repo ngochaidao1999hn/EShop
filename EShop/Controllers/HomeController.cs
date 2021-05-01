@@ -7,8 +7,10 @@ using System.Web.Mvc;
 
 namespace EShop.Controllers
 {
+    [HandleError]
     public class HomeController : Controller
     {
+       
         private EShopDbEntities db = new EShopDbEntities();
         public ActionResult Index()
         {

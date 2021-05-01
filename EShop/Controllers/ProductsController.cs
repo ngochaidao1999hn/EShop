@@ -13,6 +13,7 @@ using EShop.Repository;
 
 namespace EShop.Controllers
 {
+    [HandleError]
     public class ProductsController : Controller
     {
         private EShopDbEntities db = new EShopDbEntities();

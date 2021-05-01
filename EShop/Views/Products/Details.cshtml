@@ -6,10 +6,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     Customers cus = Session["Customer"] as Customers;
     int count = 0;
-    if (ViewBag.ListReview != null){
+    double avgrate = 0;
+    if (ViewBag.ListReview != null) {
         var listreview = ViewBag.ListReview as List<Reviews>;
         count += listreview.Count();
+        foreach (var i in listreview) {
+            avgrate += i.Review_Rate;
+        }
+        avgrate = Math.Round(avgrate / listreview.Count(), 0);
     }
+
 }
 
 <section>
@@ -165,7 +171,7 @@
                             <div class="carousel-inner">
                                 <div class="item active">
                                     @foreach (var i in Model.Pro_Image.Split('$'))
-                                    {                                      
+                                    {
                                     <img src="~/images/Products/@i" alt="" height="70px" width="60px" class="Pro_Detail_Image"/>
 
 
@@ -193,7 +199,29 @@
                             </span>
                             <p><b>Availability:</b> In Stock</p>
                             <p><b>Brand:</b> @Model.Brands.Brand_Name</p>
+                            <p>
+                                <b>Rate:</b> 
+                                @{
 
+                                    if ((int)avgrate > 0)
+                                    {
+                                        for (int index = 0; index < 5; index++)
+                                        {
+                                            if (index < (int)avgrate)
+                                            {
+                                            <span class="fa fa-star checked" id="rate"></span>
+                                            }
+                                            else
+                                            {
+                                            <span class="fa fa-star" id="rate"></span>
+                                            }
+                                        }
+                                    }
+                                    else { 
+                                        <span>Chưa có đánh giá</span> 
+                                    }
+                                    }                                                             
+                            </p>
                         </div><!--/product-information-->
                     </div>
                 </div><!--/product-details-->
@@ -216,7 +244,7 @@
                                 {
                                     foreach (var i in ViewBag.ListReview)
                                     {
-                                        DateTime datetime =DateTime.ParseExact(i.Review_DateTime,"MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                                        DateTime datetime = DateTime.ParseExact(i.Review_DateTime, "MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                                         string time = datetime.ToString("hh:mm tt");
                                         string date = datetime.ToString("dd MMMM yyyy", new CultureInfo("vi-VN"));
 
@@ -224,6 +252,21 @@
                                             <li><a href=""><i class="fa fa-user"></i>@i.Customers.Cus_Name</a></li>
                                             <li><a href=""><i class="fa fa-clock-o"></i>@time</a></li>
                                             <li><a href=""><i class="fa fa-calendar-o"></i>@date</a></li>
+                                            <li>
+                                                @{
+                                                    for (int index = 0; index < 5; index++)
+                                                    {
+                                                        if (index < Convert.ToInt32(i.Review_Rate))
+                                                        {
+                                                            <span class="fa fa-star checked" id="rate"></span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="fa fa-star" id="rate"></span>
+                                                        }
+                                                    }
+                                                }                        
+                                            </li>
                                         </ul>
                                         <p>@i.Review_Content</p>
 
@@ -236,35 +279,46 @@
 
                                 @if (cus == null)
                                 {
-                                    <a href="~/Accounts/Login">
-                                        <h2>Login to post comment</h2>
-                                    </a>
+                                    <div style="text-align:center;">
+                                        <a href="~/Accounts/Login">
+                                            <h2 style="color:#FE980F;">Login to post comment</h2>
+                                        </a>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <p><b>Write Your Review</b></p>
-                                    <form action="/Reviews/Create" method="post">
-                                        <input type="hidden" value="@cus.Cus_Id" name="Cus_id" />
-                                        <input type="hidden" value="@Model.Pro_Id" name="Pro_id" />
-                                        <textarea  id="Review_Content" name="Content" required></textarea>
-                                        <input type="submit" class="btn btn-default pull-right" value="submit" style="color:white;background-color:#FE980F;"/>
-                                     
-                                    
+                                    var list = ViewBag.ListReview as List<Reviews>;
+                                    if (list.Where(l => l.Review_CustomerId == cus.Cus_Id && l.Review_ProductId==Model.Pro_Id).Count() == 0)
+                                    {
 
-                                        <div id="ratelabel"><b i>Rating: </b></div>
-                                        <div id="star">
-                                            <input class="star star-5" id="star-5" type="radio" name="star" value="5" required/>
-                                            <label class="star star-5" for="star-5"></label>
-                                            <input class="star star-4" id="star-4" type="radio" name="star" value="4"required />
-                                            <label class="star star-4" for="star-4"></label>
-                                            <input class="star star-3" id="star-3" type="radio" name="star" value="3"required />
-                                            <label class="star star-3" for="star-3"></label>
-                                            <input class="star star-2" id="star-2" type="radio" name="star" value="2"required />
-                                            <label class="star star-2" for="star-2"></label>
-                                            <input class="star star-1" id="star-1" type="radio" name="star" value="1" required/>
-                                            <label class="star star-1" for="star-1"></label>
-                                        </div>
-                                    </form>
+                                        <p><b>Write Your Review</b></p>
+                                        <form action="/Reviews/Create" method="post">
+                                            <input type="hidden" value="@cus.Cus_Id" name="Cus_id" />
+                                            <input type="hidden" value="@Model.Pro_Id" name="Pro_id" />
+                                            <textarea id="Review_Content" name="Content" required></textarea>
+                                            <input type="submit" class="btn btn-default pull-right" value="submit" style="color:white;background-color:#FE980F;" />
+
+
+
+                                            <div id="ratelabel"><b i>Rating: </b></div>
+                                            <div id="star">
+                                                <input class="star star-5" id="star-5" type="radio" name="star" value="5" required />
+                                                <label class="star star-5" for="star-5"></label>
+                                                <input class="star star-4" id="star-4" type="radio" name="star" value="4" required />
+                                                <label class="star star-4" for="star-4"></label>
+                                                <input class="star star-3" id="star-3" type="radio" name="star" value="3" required />
+                                                <label class="star star-3" for="star-3"></label>
+                                                <input class="star star-2" id="star-2" type="radio" name="star" value="2" required />
+                                                <label class="star star-2" for="star-2"></label>
+                                                <input class="star star-1" id="star-1" type="radio" name="star" value="1" required />
+                                                <label class="star star-1" for="star-1"></label>
+                                            </div>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                            <h2 style="color:#FE980F;">1 comment for each account</h2>
+                                    }
                                 }
 
                             </div>

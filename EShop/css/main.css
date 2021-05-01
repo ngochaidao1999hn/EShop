@@ -114,7 +114,9 @@ input.star-1:checked ~ label.star:before {
 }
 
 
-
+.checked {
+    color: orange;
+}
 label.star:before {
     content: '\f006';
     font-family: FontAwesome;
